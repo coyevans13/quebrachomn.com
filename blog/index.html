@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal &mdash; Quebracho MN</title>
+    <meta name="description" content="A small-business data journal: forecasting, inventory, calibration, and the operational data lessons of running a small kitchen.">
+    <link rel="canonical" href="https://www.quebrachomn.com/blog/">
+    <style>
+        :root { --bg: #faf7f2; --card: #ffffff; --border: #e8e2d6; --text: #2a2420; --muted: #8a8178; --accent: #b8572b; --accent-soft: #f4e4d4; --ink: #1a1612; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+        .container { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+        nav { border-bottom: 1px solid var(--border); background: var(--bg); padding: 18px 0; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .brand { font-family: Georgia, serif; font-weight: 700; font-size: 22px; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; }
+        nav .brand em { color: var(--accent); font-style: normal; }
+        nav .links a { color: var(--muted); margin-left: 24px; font-size: 14px; text-decoration: none; }
+        nav .links a:hover { color: var(--ink); }
+        header { padding: 64px 0 36px; }
+        header h1 { font-family: Georgia, serif; font-size: 38px; font-weight: 700; color: var(--ink); letter-spacing: -0.6px; margin-bottom: 12px; }
+        header p { color: var(--muted); font-size: 17px; max-width: 580px; }
+        section { padding: 40px 0; }
+        .post { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 28px 30px; margin-bottom: 18px; }
+        .post .cat { color: var(--accent); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .post h3 { font-family: Georgia, serif; font-size: 22px; font-weight: 700; margin: 10px 0; line-height: 1.3; }
+        .post h3 a { color: var(--ink); text-decoration: none; }
+        .post h3 a:hover { color: var(--accent); }
+        .post .excerpt { color: #4a443d; font-size: 15px; }
+        .post .meta { color: var(--muted); font-size: 13px; margin-top: 12px; }
+        footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="brand">Quebracho <em>MN</em></a>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="/pages/about/">About</a>
+                <a href="/blog/">Journal</a>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1>The Journal</h1>
+            <p>Small-business data lessons &mdash; forecasting, inventory, calibration &mdash; from running a 200-order-a-week kitchen. Written for operators without a data team.</p>
+        </div>
+    </header>
+
+    <section>
+        <div class="container">
+            <div class="post">
+                <span class="cat">Data &middot; Operations</span>
+                <h3><a href="/blog/demand-forecasting-small-restaurants/">Demand Forecasting for a 200-Order Kitchen: What Big-Company Models Get Wrong</a></h3>
+                <p class="excerpt">Why ARIMA and Prophet underperform your gut below a certain data volume. What actually worked: a quantile-regression baseline plus a weather-and-weekend correction.</p>
+                <p class="meta">April 2026 &middot; 10 min read</p>
+            </div>
+
+            <div class="post">
+                <span class="cat">Data &middot; Inventory</span>
+                <h3><a href="/blog/inventory-as-prediction-problem/">Inventory Is a Prediction Problem, Not an Accounting Problem</a></h3>
+                <p class="excerpt">Treating every par-level as a probabilistic forecast with an explicit service-level target cut our chicken-filling waste by ~18%. Math and a spreadsheet.</p>
+                <p class="meta">April 2026 &middot; 8 min read</p>
+            </div>
+
+            <div class="post">
+                <span class="cat">Data &middot; Estimates</span>
+                <h3><a href="/blog/calibrated-estimates-small-business/">Point Estimates Lie to Small Business Owners</a></h3>
+                <p class="excerpt">&ldquo;We&rsquo;ll do $40k next month&rdquo; is a wish, not a plan. Three steps to calibrated ranges any owner can run in a spreadsheet.</p>
+                <p class="meta">April 2026 &middot; 9 min read</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Quebracho MN. Archive of the Quebracho Empanadas MN public story, now publishing a small-business data journal.</p>
+            <p style="margin-top: 8px;">Forecasting and calibration work discussed here is explored further at <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>

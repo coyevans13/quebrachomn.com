@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point Estimates Lie to Small Business Owners | Quebracho MN Journal</title>
+    <meta name="description" content="Why &quot;we&apos;ll do $40k next month&quot; is a wish, not a plan. A simple three-step method for reporting calibrated ranges instead of point estimates.">
+    <meta name="keywords" content="calibrated forecast, prediction intervals, small business planning, revenue projection, confidence intervals">
+    <link rel="canonical" href="https://www.quebrachomn.com/blog/calibrated-estimates-small-business/">
+    <meta property="og:title" content="Point Estimates Lie to Small Business Owners">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.quebrachomn.com/blog/calibrated-estimates-small-business/">
+    <style>
+        :root { --bg: #faf7f2; --card: #ffffff; --border: #e8e2d6; --text: #2a2420; --muted: #8a8178; --accent: #b8572b; --accent-soft: #f4e4d4; --ink: #1a1612; --code-bg: #f5f0e7; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+        nav { border-bottom: 1px solid var(--border); background: var(--bg); padding: 18px 0; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .brand { font-family: Georgia, serif; font-weight: 700; font-size: 22px; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; }
+        nav .brand em { color: var(--accent); font-style: normal; }
+        nav .links a { color: var(--muted); margin-left: 24px; font-size: 14px; text-decoration: none; }
+        nav .links a:hover { color: var(--ink); }
+        article { padding: 56px 0 60px; }
+        .category { color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; display: block; }
+        h1 { font-family: Georgia, serif; font-size: 36px; font-weight: 700; color: var(--ink); letter-spacing: -0.6px; margin-bottom: 16px; line-height: 1.2; }
+        .meta { color: var(--muted); font-size: 14px; margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+        h2 { font-family: Georgia, serif; font-size: 24px; font-weight: 700; color: var(--ink); margin: 40px 0 14px; }
+        h3 { font-family: Georgia, serif; font-size: 19px; font-weight: 700; color: var(--ink); margin: 28px 0 12px; }
+        p { margin-bottom: 16px; color: #3a342e; font-size: 16px; }
+        ul, ol { margin: 0 0 16px 24px; }
+        li { margin-bottom: 6px; color: #3a342e; }
+        a { color: var(--accent); }
+        strong { color: var(--ink); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: 'SF Mono', Monaco, monospace; color: #7a3a1a; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px; overflow-x: auto; margin: 18px 0; }
+        pre code { background: none; padding: 0; color: #2a2420; font-size: 13px; line-height: 1.6; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); color: #3a342e; }
+        th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; font-size: 15px; }
+        .callout strong { color: var(--ink); }
+        footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="brand">Quebracho <em>MN</em></a>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="/pages/about/">About</a>
+                <a href="/blog/">Journal</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <article>
+            <span class="category">Data &middot; Estimates</span>
+            <h1>Point Estimates Lie to Small Business Owners</h1>
+            <div class="meta">April 2026 &middot; 9 min read</div>
+
+            <p>A founder friend sent me a text last month: <em>&ldquo;We&rsquo;re projecting $40k in revenue for April.&rdquo;</em> I asked how confident she was. She said <em>&ldquo;pretty confident.&rdquo;</em> Two weeks later she texted me: <em>&ldquo;Tracking $31k. What happened?&rdquo;</em></p>
+
+            <p>Nothing happened. Her projection was a <strong>point estimate</strong> &mdash; a single number without an error bar. Point estimates always feel more certain than they are, because they don&rsquo;t visually display their own uncertainty. <em>$40k</em> sounds like a target. <em>$31k to $47k (80% confidence)</em> sounds like a forecast. They contain the same information if your model is honest, but only the second one stops you from making decisions the first one can&rsquo;t support.</p>
+
+            <p>This post is about how to produce calibrated ranges instead of point estimates, for a small business, in a spreadsheet, without a data team.</p>
+
+            <h2>Why point estimates are the default (and why they&rsquo;re dangerous)</h2>
+
+            <p>Every tool the small-business world gives you demands a single number. QuickBooks projections. Loan applications. Investor decks. Supplier contracts. &quot;Next month&rsquo;s revenue&quot; has a single cell, not a range. So owners learn to <strong>pick a number that sounds plausible</strong> and hope.</p>
+
+            <p>The harm is subtle. You make decisions &mdash; hire a person, take on a loan, commit to a lease &mdash; as if the point estimate is true. When reality comes in at 70% of the projection (as it often does), you&rsquo;re over-committed. Not because the projection was malicious, but because it didn&rsquo;t expose its own error bar, so nobody planned around the downside.</p>
+
+            <p>This is the same mistake a weather forecaster would be making if they told you &quot;tomorrow&rsquo;s high is 72&deg;&quot; instead of &quot;tomorrow&rsquo;s high is between 68&deg; and 76&deg; with high confidence.&quot; Except weather forecasters stopped doing that decades ago because they noticed people were under-dressing for cold days.</p>
+
+            <h2>What &quot;calibrated&quot; actually means</h2>
+
+            <p>An estimate is <em>calibrated</em> when, over many attempts, the stated confidence matches reality:</p>
+
+            <ul>
+                <li>When you say &quot;80% confidence,&quot; the true value is inside your range about 80% of the time.</li>
+                <li>When you say &quot;95% confidence,&quot; about 95%.</li>
+                <li>When you say &quot;50/50,&quot; you&rsquo;re right about half the time.</li>
+            </ul>
+
+            <p>Most untrained estimators are wildly overconfident. When people say &quot;I&rsquo;m 95% sure,&quot; the right answer is inside their stated range maybe 60% of the time. This is called <em>overconfidence bias</em> and it&rsquo;s been measured hundreds of times across domains from weather to finance.</p>
+
+            <p>The fix isn&rsquo;t being smarter. It&rsquo;s keeping score and correcting. Every time you make a ranged estimate, log it. When the truth comes in, check whether it fell inside your range. After 20-30 of these, you&rsquo;ll know whether your &quot;80%&quot; is really 80% or really 55%. If it&rsquo;s 55%, widen your ranges.</p>
+
+            <h2>The three-step method for a small business</h2>
+
+            <h3>Step 1: Replace every point estimate with a triplet</h3>
+
+            <p>Instead of &quot;April revenue: $40k,&quot; report:</p>
+
+            <pre><code>April revenue forecast:
+  p10 (low case):   $32k
+  p50 (most likely): $40k
+  p90 (high case):   $49k</code></pre>
+
+            <p>p10 = you&rsquo;d be surprised to come in below this. p50 = your best single-number guess. p90 = you&rsquo;d be surprised to come in above this. The p10-to-p90 range is your 80% confidence interval.</p>
+
+            <p>If you have historical data, you can compute these from the last N months&rsquo; actuals:</p>
+
+            <pre><code># Excel, with last 12 months in B2:B13
+p10 = PERCENTILE.INC(B2:B13, 0.10)
+p50 = PERCENTILE.INC(B2:B13, 0.50)
+p90 = PERCENTILE.INC(B2:B13, 0.90)</code></pre>
+
+            <p>If you don&rsquo;t have 12 months of data, start with the rule-of-thumb: <strong>p10 = 0.75 &times; p50, p90 = 1.25 &times; p50.</strong> That gives you a &plusmn;25% range, which is in the right ballpark for most small-business monthly revenue and is almost certainly better than reporting only the point estimate.</p>
+
+            <h3>Step 2: Make the decision against the range, not the midpoint</h3>
+
+            <p>This is the part most people skip and it&rsquo;s the part that matters.</p>
+
+            <p>Every decision that depends on the forecast should be tested against <strong>all three numbers</strong>, not just the p50.</p>
+
+            <ul>
+                <li>&quot;Can we afford this hire?&quot; &mdash; test against p10, not p50. If you can&rsquo;t make payroll at p10, you can&rsquo;t afford the hire.</li>
+                <li>&quot;Can we pre-order an extra pallet of flour?&quot; &mdash; test against p90. If you can&rsquo;t move the inventory at p90, don&rsquo;t buy it.</li>
+                <li>&quot;Do we need a bridge loan?&quot; &mdash; test against p10 across the next 3 months. If any of those p10&rsquo;s goes below operating costs, yes.</li>
+            </ul>
+
+            <div class="callout">
+                <strong>The trick:</strong> different decisions care about different tails of the distribution. Planning against the p50 is like a weather forecaster telling a wedding planner &quot;the expected rainfall is 0.3 inches.&quot; That number doesn&rsquo;t answer the only question the wedding planner has, which is &quot;what&rsquo;s the probability of more than 1 inch?&quot;</div>
+
+            <h3>Step 3: Keep a scoreboard</h3>
+
+            <p>In a spreadsheet:</p>
+
+            <table>
+                <tr><th>Forecast date</th><th>p10</th><th>p50</th><th>p90</th><th>Actual</th><th>Inside 80% CI?</th></tr>
+                <tr><td>Mar 1</td><td>$28k</td><td>$35k</td><td>$43k</td><td>$34k</td><td>yes</td></tr>
+                <tr><td>Apr 1</td><td>$32k</td><td>$40k</td><td>$49k</td><td>$31k</td><td>no (below p10)</td></tr>
+                <tr><td>May 1</td><td>$34k</td><td>$42k</td><td>$51k</td><td>$44k</td><td>yes</td></tr>
+            </table>
+
+            <p>After 10 forecasts, count how often &quot;Inside 80% CI?&quot; was yes. If it&rsquo;s 7-9 out of 10, you&rsquo;re calibrated. If it&rsquo;s 3-5 out of 10, you&rsquo;re overconfident and need to widen your ranges. Multiply p10 by 0.9 and p90 by 1.1 as a correction and try again next round.</p>
+
+            <p>This is a feedback loop, not a one-time exercise. You&rsquo;ll keep nudging the ranges for a year or two until they&rsquo;re trustworthy. Then you&rsquo;ll make better decisions forever.</p>
+
+            <h2>Worked example: should we sign the catering contract?</h2>
+
+            <p>Real scenario we ran. A prospective wholesale account proposed a contract that guaranteed us $8k/month in minimum orders for 12 months, but required us to commit staffing and ingredient capacity to cover their peak-week demand of $14k.</p>
+
+            <p>The point-estimate analysis: &quot;average $11k/month &times; 12 = $132k, great deal.&quot;</p>
+
+            <p>The ranged analysis: at p10, they order the minimum ($8k), which after the committed staff and ingredients left us with a tiny margin. At p90, their peak weeks stacked on our existing wholesale base would exceed our production capacity, meaning we&rsquo;d miss existing orders and damage those accounts.</p>
+
+            <p>We negotiated a cap on peak-week volume and a smaller minimum. Final contract was ~80% of the original dollar value but had <em>zero</em> bad outcomes in either tail. The point-estimate analysis would have cheerfully said yes to a structure that hurt us in both tails.</p>
+
+            <h2>The broader pattern</h2>
+
+            <p>Weather forecasting moved to probabilistic forecasts in the 1960s. Finance moved to probabilistic risk models in the 1970s. Hospital capacity planning, airline seat pricing, utility load forecasting &mdash; all operate on distributions, not point estimates. Small businesses are 50 years late to this party, not because the math is hard, but because the tools they buy (QuickBooks, POS systems, loan software) assume the old way.</p>
+
+            <p>The fix is a spreadsheet, a weekly habit, and a willingness to report ranges instead of single numbers in places you can control. Your lender will still want a single number on the application. But your own planning doc doesn&rsquo;t have to.</p>
+
+            <p>The forecasting systems I work on now at <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a> output nothing but calibrated ranges &mdash; every predicted outcome is a probability distribution with an explicit confidence, and every day a monitoring job checks whether those confidences held up against realized results. The measurement loop is the thing that makes the ranges trustworthy over time. Same principle, different industry.</p>
+
+            <h2>Three takeaways</h2>
+
+            <ol>
+                <li><strong>Replace point estimates with p10/p50/p90 everywhere you can.</strong> If you have no history, start with &plusmn;25%.</li>
+                <li><strong>Make decisions against the relevant tail, not the midpoint.</strong> Downside decisions: p10. Upside capacity: p90.</li>
+                <li><strong>Keep a scoreboard of your ranges versus actuals.</strong> Widen the ranges until they&rsquo;re right about 80% of the time.</li>
+            </ol>
+
+            <p>&larr; Back to the <a href="/blog/">Journal</a>.</p>
+
+        </article>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Quebracho MN. Archive of the Quebracho Empanadas MN public story, now publishing a small-business data journal.</p>
+            <p style="margin-top: 8px;">Forecasting and calibration work discussed here is explored further at <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>

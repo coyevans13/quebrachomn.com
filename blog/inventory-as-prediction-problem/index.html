@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Is a Prediction Problem, Not an Accounting Problem | Quebracho MN Journal</title>
+    <meta name="description" content="Why treating restaurant par-levels as probabilistic forecasts with explicit service-level targets cut our chicken-filling waste by ~18%. Math and a spreadsheet.">
+    <meta name="keywords" content="restaurant inventory, par level, service level, newsvendor problem, small business inventory, safety stock">
+    <link rel="canonical" href="https://www.quebrachomn.com/blog/inventory-as-prediction-problem/">
+    <meta property="og:title" content="Inventory Is a Prediction Problem, Not an Accounting Problem">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.quebrachomn.com/blog/inventory-as-prediction-problem/">
+    <style>
+        :root { --bg: #faf7f2; --card: #ffffff; --border: #e8e2d6; --text: #2a2420; --muted: #8a8178; --accent: #b8572b; --accent-soft: #f4e4d4; --ink: #1a1612; --code-bg: #f5f0e7; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+        nav { border-bottom: 1px solid var(--border); background: var(--bg); padding: 18px 0; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .brand { font-family: Georgia, serif; font-weight: 700; font-size: 22px; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; }
+        nav .brand em { color: var(--accent); font-style: normal; }
+        nav .links a { color: var(--muted); margin-left: 24px; font-size: 14px; text-decoration: none; }
+        nav .links a:hover { color: var(--ink); }
+        article { padding: 56px 0 60px; }
+        .category { color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; display: block; }
+        h1 { font-family: Georgia, serif; font-size: 36px; font-weight: 700; color: var(--ink); letter-spacing: -0.6px; margin-bottom: 16px; line-height: 1.2; }
+        .meta { color: var(--muted); font-size: 14px; margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+        h2 { font-family: Georgia, serif; font-size: 24px; font-weight: 700; color: var(--ink); margin: 40px 0 14px; }
+        h3 { font-family: Georgia, serif; font-size: 19px; font-weight: 700; color: var(--ink); margin: 28px 0 12px; }
+        p { margin-bottom: 16px; color: #3a342e; font-size: 16px; }
+        ul, ol { margin: 0 0 16px 24px; }
+        li { margin-bottom: 6px; color: #3a342e; }
+        a { color: var(--accent); }
+        strong { color: var(--ink); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: 'SF Mono', Monaco, monospace; color: #7a3a1a; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px; overflow-x: auto; margin: 18px 0; }
+        pre code { background: none; padding: 0; color: #2a2420; font-size: 13px; line-height: 1.6; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); color: #3a342e; }
+        th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; font-size: 15px; }
+        .callout strong { color: var(--ink); }
+        footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="brand">Quebracho <em>MN</em></a>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="/pages/about/">About</a>
+                <a href="/blog/">Journal</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <article>
+            <span class="category">Data &middot; Inventory</span>
+            <h1>Inventory Is a Prediction Problem, Not an Accounting Problem</h1>
+            <div class="meta">April 2026 &middot; 8 min read</div>
+
+            <p>For the first two years, our chicken filling par-level was the same every Sunday: <strong>last week&rsquo;s usage plus 20%.</strong> It&rsquo;s what the spreadsheet template said to do. It&rsquo;s what the restaurant consultant said to do. It&rsquo;s what most POS systems auto-generate for you if you turn on par-level alerts.</p>
+
+            <p>It cost us about $180 a week in wasted chicken filling. Over a year, that&rsquo;s a vacation.</p>
+
+            <p>The mistake was treating inventory as an accounting problem: <em>how much did we use, add some slack, write that down.</em> Inventory is a prediction problem. Par levels are forecasts. And the right number isn&rsquo;t &quot;last week + 20%&quot; &mdash; it&rsquo;s whatever value hits a <strong>service level you explicitly chose</strong>.</p>
+
+            <h2>The accounting view (wrong)</h2>
+
+            <p>The pattern is everywhere:</p>
+
+            <pre><code>par_level = last_week_usage * 1.2
+# Or: average of last 4 weeks * 1.2
+# Or: whatever the POS alert says</code></pre>
+
+            <p>This has two problems:</p>
+
+            <ol>
+                <li>The 20% has no justification. It&rsquo;s a vibe. On weeks where your demand distribution is tight, 20% is too much. On weeks where demand has a fat tail (catering order risk, weather shock), 20% is too little.</li>
+                <li>It doesn&rsquo;t tell you what you&rsquo;re paying for. &quot;20% cushion&quot; buys you <em>some</em> stockout protection, but how much? If you run out twice a month, is that because 20% is too low, or because your usage is more variable than the mean suggests?</li>
+            </ol>
+
+            <h2>The prediction view (right)</h2>
+
+            <p>Re-phrase the question. Instead of &quot;how much should I prep?&quot;, ask:</p>
+
+            <p style="font-size: 17px; padding: 14px 20px; background: var(--accent-soft); border-radius: 8px;"><strong>&ldquo;How much do I prep so I stock out less than X% of the time?&rdquo;</strong></p>
+
+            <p>That X is your <strong>service level</strong>. It&rsquo;s a policy choice you make once:</p>
+
+            <ul>
+                <li>90% service level = stock out ~3 times per month</li>
+                <li>95% = stock out ~1-2 times per month</li>
+                <li>99% = almost never, but you&rsquo;ll waste more</li>
+            </ul>
+
+            <p>Higher service level = more cushion = more waste. Lower service level = less waste = more stockouts. <strong>You cannot escape this tradeoff.</strong> You can only make it deliberate.</p>
+
+            <h2>The math, such as it is</h2>
+
+            <p>This is the classic <em>newsvendor problem</em> that operations-research textbooks have solved for a century. The answer, for a normally distributed demand with mean &mu; and standard deviation &sigma;, is:</p>
+
+            <pre><code>par_level = mu + z_score(service_level) * sigma</code></pre>
+
+            <p>Where <code>z_score</code> comes from a z-table (Excel: <code>NORM.S.INV(service_level)</code>):</p>
+
+            <table>
+                <tr><th>Service level</th><th>z-score</th></tr>
+                <tr><td>90%</td><td>1.28</td></tr>
+                <tr><td>95%</td><td>1.64</td></tr>
+                <tr><td>99%</td><td>2.33</td></tr>
+            </table>
+
+            <p>So if your chicken-filling usage averages 14 lbs/day with a standard deviation of 3 lbs, and you want to stock out only 5% of the time:</p>
+
+            <pre><code>par_level = 14 + 1.64 * 3 = 18.9 lbs</code></pre>
+
+            <p>Compare that to the old &quot;last week + 20%&quot; &mdash; if last week you used 14 lbs, that gave you 16.8 lbs. You&rsquo;d run out ~19% of the time, not 5%. The old rule was secretly running a ~80% service level and nobody knew it.</p>
+
+            <h2>The spreadsheet version, for humans</h2>
+
+            <p>You don&rsquo;t need Python. A spreadsheet with one column of daily usage, a running mean, a running standard deviation, and the par formula is enough:</p>
+
+            <pre><code>A: date
+B: daily_usage
+C: mean_last_28d      = AVERAGE(OFFSET(B2,-28,0,28,1))
+D: stdev_last_28d     = STDEV(OFFSET(B2,-28,0,28,1))
+E: service_level      = 0.95
+F: z_score            = NORM.S.INV(E2)
+G: par_level          = C2 + F2 * D2</code></pre>
+
+            <p>Update it weekly. Your par level now moves in response to how <em>variable</em> demand has been, not just how much. A week with a steady, predictable rhythm gives you a lower par. A week with a catering order in the middle gives you a higher par. The cushion adjusts itself.</p>
+
+            <h2>What we saw after switching</h2>
+
+            <p>On chicken filling specifically, between four weeks before switching and eight weeks after:</p>
+
+            <table>
+                <tr><th>Metric</th><th>Before</th><th>After (95% SL)</th></tr>
+                <tr><td>Avg par level</td><td>17.2 lbs/day</td><td>16.1 lbs/day</td></tr>
+                <tr><td>Avg waste (lbs)</td><td>2.8/day</td><td>2.3/day</td></tr>
+                <tr><td>Stockouts/month</td><td>4-5</td><td>1-2</td></tr>
+                <tr><td>Weekly waste cost</td><td>$245</td><td>$202</td></tr>
+            </table>
+
+            <p>About $180/month saved on one ingredient. Scaling the same policy across the 6 perishable ingredients we were tracking got us close to the $180/week figure from the opening. Meaningful money for a business at our volume.</p>
+
+            <p>Also: knowing the stockout rate was <em>chosen</em>, not happening to us, changed how we thought about everything else. When a key wholesale account called asking if we could cover a last-minute order, we could look at par-level cushion and know whether yes was safe. Before, that was a gut call.</p>
+
+            <h2>Handling the wrinkles</h2>
+
+            <h3>Demand isn&rsquo;t normal</h3>
+
+            <p>Strictly, the newsvendor formula above assumes normally-distributed demand. Restaurant demand usually isn&rsquo;t &mdash; it&rsquo;s often right-skewed (a few big days, many small ones). Two practical fixes:</p>
+
+            <ol>
+                <li>Split demand by day-of-week. Monday demand and Saturday demand are two different distributions; modeling them as one gives you too-wide variance.</li>
+                <li>For the very skewed items, use the <strong>empirical quantile</strong> of the last 28 days&rsquo; demand instead of mean+&sigma;. In a spreadsheet: <code>PERCENTILE.INC(range, service_level)</code>. That&rsquo;s distribution-free and usually more accurate for small samples.</li>
+            </ol>
+
+            <h3>Service level isn&rsquo;t always 95%</h3>
+
+            <p>High-margin items, high-visibility items (&quot;if we run out of empanadas on a Saturday night we lose the customer forever&quot;) want a 98-99% service level. Low-margin, easily-substitutable items can run at 85-90%. Set it per ingredient, not globally.</p>
+
+            <h3>Lead time matters</h3>
+
+            <p>If restocking takes 2 days instead of overnight, your par level needs to cover 2 days of demand variability, not 1. The math scales: <code>sigma * sqrt(lead_time)</code>. For most restaurant perishables with daily prep, lead time is 1, so you can ignore this.</p>
+
+            <h2>The pattern, one more time</h2>
+
+            <p>Accounting view: &quot;count what we used, pad it, write it down.&quot;</p>
+
+            <p>Prediction view: <strong>&quot;the par level is a forecast of a quantile of next-period demand; choose the quantile deliberately.&quot;</strong></p>
+
+            <p>Same math powers real-time trading systems, ad bid caps, server-capacity planning, hospital bed allocation. It&rsquo;s the same problem shape. At <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a> the equivalent is choosing a Kelly fraction &mdash; another explicit service-level policy that you pick once and then measure, rather than tuning from vibes. The kitchen version is smaller-stakes but the shape is identical.</p>
+
+            <h2>Three takeaways</h2>
+
+            <ol>
+                <li><strong>Every &quot;cushion&quot; you add is an implicit service-level choice.</strong> Make it explicit.</li>
+                <li><strong>For small data, use empirical percentiles instead of mean+&sigma;.</strong> <code>PERCENTILE.INC</code> is your friend.</li>
+                <li><strong>Review service-level targets quarterly, not par levels weekly.</strong> The policy is the thing you maintain. The par level falls out of it.</li>
+            </ol>
+
+            <p>Next: <a href="/blog/calibrated-estimates-small-business/">why point estimates lie to small-business owners and what to report instead</a>.</p>
+
+        </article>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Quebracho MN. Archive of the Quebracho Empanadas MN public story, now publishing a small-business data journal.</p>
+            <p style="margin-top: 8px;">Forecasting and calibration work discussed here is explored further at <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>

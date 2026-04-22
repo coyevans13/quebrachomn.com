@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demand Forecasting for a 200-Order Kitchen | Quebracho MN Journal</title>
+    <meta name="description" content="Why big-company forecasting models underperform intuition in small restaurants, and what actually works for a kitchen with 12 weeks of sales data.">
+    <meta name="keywords" content="small business forecasting, restaurant demand, quantile regression, small data forecasting, Prophet, ARIMA limits">
+    <link rel="canonical" href="https://www.quebrachomn.com/blog/demand-forecasting-small-restaurants/">
+    <meta property="og:title" content="Demand Forecasting for a 200-Order Kitchen">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.quebrachomn.com/blog/demand-forecasting-small-restaurants/">
+    <style>
+        :root { --bg: #faf7f2; --card: #ffffff; --border: #e8e2d6; --text: #2a2420; --muted: #8a8178; --accent: #b8572b; --accent-soft: #f4e4d4; --ink: #1a1612; --code-bg: #f5f0e7; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+        nav { border-bottom: 1px solid var(--border); background: var(--bg); padding: 18px 0; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .brand { font-family: Georgia, serif; font-weight: 700; font-size: 22px; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; }
+        nav .brand em { color: var(--accent); font-style: normal; }
+        nav .links a { color: var(--muted); margin-left: 24px; font-size: 14px; text-decoration: none; }
+        nav .links a:hover { color: var(--ink); }
+        article { padding: 56px 0 60px; }
+        .category { color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; display: block; }
+        h1 { font-family: Georgia, serif; font-size: 36px; font-weight: 700; color: var(--ink); letter-spacing: -0.6px; margin-bottom: 16px; line-height: 1.2; }
+        .meta { color: var(--muted); font-size: 14px; margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+        h2 { font-family: Georgia, serif; font-size: 24px; font-weight: 700; color: var(--ink); margin: 40px 0 14px; }
+        h3 { font-family: Georgia, serif; font-size: 19px; font-weight: 700; color: var(--ink); margin: 28px 0 12px; }
+        p { margin-bottom: 16px; color: #3a342e; font-size: 16px; }
+        ul, ol { margin: 0 0 16px 24px; }
+        li { margin-bottom: 6px; color: #3a342e; }
+        a { color: var(--accent); }
+        strong { color: var(--ink); }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: 'SF Mono', Monaco, monospace; color: #7a3a1a; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px; overflow-x: auto; margin: 18px 0; }
+        pre code { background: none; padding: 0; color: #2a2420; font-size: 13px; line-height: 1.6; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); color: #3a342e; }
+        th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; font-size: 15px; }
+        .callout strong { color: var(--ink); }
+        footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="brand">Quebracho <em>MN</em></a>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="/pages/about/">About</a>
+                <a href="/blog/">Journal</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <article>
+            <span class="category">Data &middot; Operations</span>
+            <h1>Demand Forecasting for a 200-Order Kitchen: What Big-Company Models Get Wrong</h1>
+            <div class="meta">April 2026 &middot; 10 min read</div>
+
+            <p>Every Sunday night in the kitchen, one question decided whether the following week&rsquo;s margins would hold: <strong>how many empanadas do we prep?</strong> The answer was some mix of last week&rsquo;s sales, the weather forecast, whether a wholesale account had a catering order, and whatever the owner felt in their bones. For a long time, the bones won.</p>
+
+            <p>Eventually we tried to do it &quot;properly&quot; &mdash; which, when you spend any time on the forecasting internet, means <strong>ARIMA, Prophet, maybe XGBoost with lag features.</strong> Every one of those underperformed the owner&rsquo;s gut for our first year of structured data. This post is about why, and what did eventually work.</p>
+
+            <h2>The setup</h2>
+
+            <p>We had roughly 12 weeks of clean daily sales data when we first tried to model it. That&rsquo;s ~84 observations. By ML standards, a rounding error. By small-business standards, &quot;three months of operating&quot; and already the longest runway most shops have before deciding they need to predict things.</p>
+
+            <p>The target: predict daily retail-channel empanada orders for the next 7 days.</p>
+
+            <p>Known features:</p>
+
+            <ul>
+                <li>Day of week</li>
+                <li>Weather forecast (temp, precipitation probability)</li>
+                <li>Known wholesale catering orders</li>
+                <li>Local events (Twins home game, U of M move-in, State Fair week)</li>
+            </ul>
+
+            <h2>Why ARIMA and Prophet underperformed the owner&rsquo;s intuition</h2>
+
+            <h3>1. They assume a signal exists in the history alone</h3>
+
+            <p>ARIMA and its relatives try to find structure in a sequence of values. They work well when the past <em>is</em> the explanation &mdash; when long-running trend and seasonality dominate. A 200-order-a-week kitchen has neither. Our sales were structured by things that <em>were not in the sales history</em>: the weather, whether the owner posted on Instagram that morning, whether a food truck competitor showed up at the farmers market.</p>
+
+            <p>Prophet in particular is very good at fitting smooth trend-plus-seasonality. When your actual series is spiky and shaped by exogenous events, Prophet happily overfits a seasonality that isn&rsquo;t there and mean-regresses exactly when the bones would have said &quot;big spike next Saturday, prep extra.&quot;</p>
+
+            <h3>2. 84 observations can&rsquo;t support a 10-parameter model</h3>
+
+            <p>A rough rule-of-thumb: you need roughly 10-20 observations per parameter before a model learns anything trustworthy. ARIMA(2,1,2) with weekly seasonality has something like 5-7 effective parameters. XGBoost with even modest feature engineering has implicit capacity for many more. 84 observations means every one of those models is guessing.</p>
+
+            <p>The model that did eventually work had <strong>3 parameters.</strong> More on that below.</p>
+
+            <h3>3. The owner&rsquo;s intuition encodes features the data doesn&rsquo;t</h3>
+
+            <p>The owner knew things the spreadsheet didn&rsquo;t:</p>
+
+            <ul>
+                <li>&quot;The wholesale account re-orders on Wednesdays, but never during the weeks their own delivery driver is out&quot;</li>
+                <li>&quot;We&rsquo;re slow on rainy Saturdays but busy on rainy <em>Sundays</em> because of the football thing&quot;</li>
+                <li>&quot;A mention in the City Pages food column bumps us for ~10 days, then fades&quot;</li>
+            </ul>
+
+            <p>None of this was in the CSV. No off-the-shelf model could learn it. The owner, making ~50 forecasts a year at this resolution, learned it in a few quarters.</p>
+
+            <h2>What actually worked: three steps, three parameters</h2>
+
+            <p>After burning a month on the fancy stuff, we replaced it with this:</p>
+
+            <h3>Step 1: Day-of-week median as the baseline</h3>
+
+            <p>For each day of the week (Mon/Tue/Wed/...), take the median of the last 8 weeks of sales on that day. That&rsquo;s it.</p>
+
+            <pre><code>import pandas as pd
+
+df = pd.read_csv(&quot;daily_sales.csv&quot;, parse_dates=[&quot;date&quot;])
+df[&quot;dow&quot;] = df[&quot;date&quot;].dt.day_name()
+baseline = df.tail(8 * 7).groupby(&quot;dow&quot;)[&quot;orders&quot;].median()
+# Saturday -&gt; 62, Sunday -&gt; 48, Monday -&gt; 18, ...</code></pre>
+
+            <p>Median, not mean, because a single viral Instagram post can skew a mean and poison the baseline for weeks. Median is robust to the one-off spike and still tracks genuine level changes over the 8-week window.</p>
+
+            <h3>Step 2: A weather correction</h3>
+
+            <p>One multiplier: if tomorrow&rsquo;s forecast says <em>heavy</em> rain and it&rsquo;s a weekend day, multiply the baseline by 0.75. If it&rsquo;s a heatwave (&gt;90&deg;F) weekday lunch, multiply by 1.15. Otherwise 1.0.</p>
+
+            <p>This was fit by eyeballing &mdash; not by regression &mdash; because with 84 observations a regression would have produced a coefficient with a 95% confidence interval wider than the coefficient itself. The owner&rsquo;s eyeballed multiplier <em>was the regularized estimate</em>.</p>
+
+            <h3>Step 3: A known-events override</h3>
+
+            <p>A simple append-only list of upcoming bumps/dips, each with a multiplier:</p>
+
+            <pre><code>events:
+  - date: 2026-04-25
+    multiplier: 1.4
+    reason: &quot;confirmed catering order, 180 pc&quot;
+  - date: 2026-04-27
+    multiplier: 0.7
+    reason: &quot;Twins away game, typically slow weekday evening&quot;</code></pre>
+
+            <p>The owner maintains this list in the same doc they already use for ordering prep. It&rsquo;s not a &quot;model feature,&quot; it&rsquo;s an operational calendar.</p>
+
+            <h3>Putting it together</h3>
+
+            <pre><code>def forecast(date, sales_history, weather, events):
+    dow = date.day_name()
+    baseline = sales_history.tail(56).groupby(
+        sales_history.index.day_name()
+    )[&quot;orders&quot;].median()[dow]
+    m_weather = weather_multiplier(date, weather)
+    m_event = event_multiplier(date, events)
+    return baseline * m_weather * m_event</code></pre>
+
+            <p>Three parameters (well, one plus two multiplier tables). One spreadsheet. One hour a week to maintain. After we switched, forecasting error dropped and the fancy-model approach was quietly deleted.</p>
+
+            <div class="callout">
+                <strong>The principle:</strong> when you have small data and strong domain knowledge, your model&rsquo;s job is to <em>encode the domain knowledge explicitly</em>, not to pretend you have enough data to discover it. Big-company models are built for the opposite situation.</div>
+
+            <h2>When to graduate to something fancier</h2>
+
+            <p>The 3-parameter baseline starts to leave money on the table once:</p>
+
+            <ul>
+                <li>You have &gt;18 months of daily data (enough to fit weekly seasonality and trend jointly)</li>
+                <li>You have &gt;3 channels/products with different dynamics (a single baseline underfits)</li>
+                <li>Your weather/event multipliers start overlapping in complicated ways (interaction effects)</li>
+            </ul>
+
+            <p>At that point, a simple quantile regression on day-of-week plus weather plus event-flag plus a 7-day-lag term will probably beat the heuristic. You don&rsquo;t need Prophet or ARIMA even then. You need a linear model with 5 features and a year of data.</p>
+
+            <h2>The broader pattern</h2>
+
+            <p>This isn&rsquo;t a restaurant story. It&rsquo;s a small-data story. The same thing happens to small hedge funds, small ad shops, small B2B SaaS companies: they reach for the same tools big companies use, and the tools don&rsquo;t fit.</p>
+
+            <p>The small-business version of the discipline is different. It starts with a 3-parameter baseline, pays for operational calendar maintenance, and only adds model complexity when the data volume has visibly earned it. Calibration &mdash; knowing how wrong your forecast is, <em>on average</em>, under different conditions &mdash; matters more than squeezing the last 2% of accuracy out of a fancy model you can&rsquo;t maintain.</p>
+
+            <p>The same principle drives the forecasting systems I work on now at <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a> &mdash; calibrated probability distributions over outcomes, not point estimates; measured Expected Calibration Error as the success metric, not raw accuracy. The context changed (sports-prediction markets instead of empanadas), the lesson didn&rsquo;t.</p>
+
+            <h2>Three takeaways for small-business operators</h2>
+
+            <ol>
+                <li><strong>Your first forecast model should have fewer parameters than you have weeks of data.</strong> Three is a good number.</li>
+                <li><strong>Use median, not mean, for baseline levels.</strong> A single good Instagram week shouldn&rsquo;t rewrite your prep schedule for a month.</li>
+                <li><strong>Maintain an events calendar and treat it as a model feature.</strong> It&rsquo;s cheaper than a data scientist and encodes information no off-the-shelf model can learn.</li>
+            </ol>
+
+            <p>Next in the journal: <a href="/blog/inventory-as-prediction-problem/">why inventory is a prediction problem, not an accounting problem, and what that changed for our chicken-filling waste</a>.</p>
+
+        </article>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Quebracho MN. Archive of the Quebracho Empanadas MN public story, now publishing a small-business data journal.</p>
+            <p style="margin-top: 8px;">Forecasting and calibration work discussed here is explored further at <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>
