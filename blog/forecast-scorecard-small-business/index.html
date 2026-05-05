@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Forecast Scorecard: Stop Being Wrong The Same Way Twice | Quebracho MN Journal</title>
+    <meta name="description" content="A spreadsheet-only system for logging every forecast you make and what actually happened. Why small-business owners stay wrong the same way for years, and the simple bookkeeping that fixes it.">
+    <meta name="keywords" content="forecast tracking, forecast accuracy, small business forecasting, prediction journal, calibration scorecard, restaurant forecasting">
+    <link rel="canonical" href="https://quebrachomn.com/blog/forecast-scorecard-small-business/">
+    <meta property="og:title" content="The Forecast Scorecard: Stop Being Wrong The Same Way Twice">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://quebrachomn.com/blog/forecast-scorecard-small-business/">
+    <style>
+        :root { --bg: #faf7f2; --card: #ffffff; --border: #e8e2d6; --text: #2a2420; --muted: #8a8178; --accent: #b8572b; --accent-soft: #f4e4d4; --ink: #1a1612; --code-bg: #f5f0e7; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.8; }
+        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+        nav { border-bottom: 1px solid var(--border); background: var(--bg); padding: 18px 0; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .brand { font-family: Georgia, serif; font-weight: 700; font-size: 22px; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; }
+        nav .brand em { color: var(--accent); font-style: normal; }
+        nav .links a { color: var(--muted); margin-left: 24px; font-size: 14px; text-decoration: none; }
+        nav .links a:hover { color: var(--ink); }
+        article { padding: 56px 0 60px; }
+        .category { color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; display: block; }
+        h1 { font-family: Georgia, serif; font-size: 36px; font-weight: 700; color: var(--ink); letter-spacing: -0.6px; margin-bottom: 16px; line-height: 1.2; }
+        .meta { color: var(--muted); font-size: 14px; margin-bottom: 36px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+        h2 { font-family: Georgia, serif; font-size: 24px; font-weight: 700; color: var(--ink); margin: 40px 0 14px; }
+        h3 { font-family: Georgia, serif; font-size: 19px; font-weight: 700; color: var(--ink); margin: 28px 0 12px; }
+        p { margin-bottom: 16px; color: #3a342e; font-size: 16px; }
+        ul, ol { margin: 0 0 16px 24px; }
+        li { margin-bottom: 6px; color: #3a342e; }
+        a { color: var(--accent); }
+        strong { color: var(--ink); }
+        em { color: #4a443d; }
+        code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: 'SF Mono', Monaco, monospace; color: #7a3a1a; }
+        pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 18px; overflow-x: auto; margin: 18px 0; }
+        pre code { background: none; padding: 0; color: #2a2420; font-size: 13px; line-height: 1.6; }
+        table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14px; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); color: #3a342e; }
+        th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; font-size: 15px; }
+        .callout strong { color: var(--ink); }
+        footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="/" class="brand">Quebracho <em>MN</em></a>
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="/pages/about/">About</a>
+                <a href="/blog/">Journal</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <article>
+            <span class="category">Data &middot; Estimates</span>
+            <h1>The Forecast Scorecard: Stop Being Wrong the Same Way Twice</h1>
+            <div class="meta">May 2026 &middot; 11 min read</div>
+
+            <p>Every owner I&rsquo;ve ever worked with believes their forecasts are roughly right. None of them have ever sat down and checked. They remember the months they nailed and forget the months they missed. They tell themselves <em>&ldquo;last August was an anomaly,&rdquo;</em> and then it&rsquo;s anomalous again the next August, and they tell themselves the same thing.</p>
+
+            <p>The fix is the most boring spreadsheet in the world. You write down every forecast as you make it, and when reality arrives, you write that down too. After twelve months of that bookkeeping, you can answer questions you&rsquo;ve never been able to answer: <em>Am I systematically optimistic about new menu items? Do I always under-forecast December? Is my &ldquo;80% confidence&rdquo; really 80%, or is it really 50%?</em> Once you can answer those questions, you stop being wrong the same way twice. That&rsquo;s the whole game.</p>
+
+            <p>This post is the recipe. No software. No data team. A Google Sheet, fifteen minutes a week, and the discipline to actually log forecasts <em>before</em> you find out the answer.</p>
+
+            <h2>Why most owners never check</h2>
+
+            <p>Three reasons it doesn&rsquo;t happen:</p>
+
+            <ol>
+                <li><strong>It&rsquo;s embarrassing.</strong> Logging your forecasts and then checking them is publicly admitting you&rsquo;re going to be wrong. Most of us would rather feel right than be right.</li>
+                <li><strong>The feedback loop is slow.</strong> A monthly forecast takes a month to verify. By the time the answer comes in, you&rsquo;ve forgotten what your reasoning was when you made it.</li>
+                <li><strong>There&rsquo;s no template.</strong> Calibration is a research-paper word; <em>scorecard</em> is a spreadsheet word. Without the spreadsheet, owners don&rsquo;t know where to start.</li>
+            </ol>
+
+            <p>The first two are character problems. The third is what this post solves.</p>
+
+            <h2>What goes in the scorecard</h2>
+
+            <p>Six columns, no exceptions:</p>
+
+            <table>
+                <tr><th>Column</th><th>What goes here</th></tr>
+                <tr><td>Made on</td><td>Date you made the forecast</td></tr>
+                <tr><td>Forecast for</td><td>Date / week / month the forecast is about</td></tr>
+                <tr><td>Question</td><td>"April revenue", "Saturday catering orders", etc.</td></tr>
+                <tr><td>Low (p10)</td><td>Number you'd be surprised to come in below</td></tr>
+                <tr><td>Best (p50)</td><td>Single best guess</td></tr>
+                <tr><td>High (p90)</td><td>Number you'd be surprised to come in above</td></tr>
+                <tr><td>Actual</td><td>Filled in when reality arrives</td></tr>
+                <tr><td>In range?</td><td>Y / N (formula)</td></tr>
+                <tr><td>Notes</td><td>What you knew when forecasting; what surprised you</td></tr>
+            </table>
+
+            <p>That&rsquo;s the whole thing. The hardest column is the last one. Most people skip it. Skipping it means you can&rsquo;t reconstruct your reasoning when you review six months later, and the whole exercise loses most of its value.</p>
+
+            <p>The first column &mdash; the date you made the forecast &mdash; matters more than people think. Without it, you can&rsquo;t tell whether your January forecast for August was just as wrong as your June forecast for August (you keep getting better as more information arrives) or worse (your model has a stable seasonal blind spot). Time-stamping every prediction lets you separate &ldquo;forecast quality&rdquo; from &ldquo;information availability&rdquo; later.</p>
+
+            <h2>Three rules for filling it out</h2>
+
+            <h3>Rule 1: Log the forecast before you find out the answer</h3>
+
+            <p>This sounds obvious. It is not obvious. Most owners forecast in their head while looking at the dashboard, then react to what they see. The forecast and the realization happen at the same moment, so there&rsquo;s nothing to compare. Without a hard line between &ldquo;before-the-fact estimate&rdquo; and &ldquo;after-the-fact actual,&rdquo; you can&rsquo;t score anything.</p>
+
+            <p>Discipline trick: pick a fixed time each week to update the scorecard with new forecasts (we did Monday morning, before the week&rsquo;s data showed up). At that point, you don&rsquo;t know yet how the week will go. Whatever you write, you wrote it honestly. After that, the scorecard is locked &mdash; you can add the actual when it lands, but you cannot edit your earlier forecast.</p>
+
+            <h3>Rule 2: Always include the range, never just the point</h3>
+
+            <p>If you only log the p50 (best guess), you can&rsquo;t score calibration &mdash; you can only score whether you happened to be close. The p10/p90 range is what makes the scorecard meaningful. The simple test &mdash; <em>did the actual fall inside the p10-to-p90 range?</em> &mdash; gives you a calibration check that improves with every forecast you log.</p>
+
+            <p>Over many forecasts, your &ldquo;in range?&rdquo; column should be Y about 80% of the time (since p10-to-p90 is an 80% confidence interval). If your hit rate is below 80%, your ranges are too narrow &mdash; you&rsquo;re overconfident. Widen them. If your hit rate is above 90%, your ranges are <em>too wide</em> &mdash; the forecast is meaningless because it covers everything. Tighten them.</p>
+
+            <p>This is the whole calibration loop. There&rsquo;s nothing more to it. The bookkeeping is what makes the loop close.</p>
+
+            <h3>Rule 3: Write the why, not just the number</h3>
+
+            <p>Three months in, the scorecard&rsquo;s value comes from its <em>notes</em> column. When you go back and ask &ldquo;why was I 12% high in March?&rdquo;, the notes are how you reconstruct your assumptions. Without them you have a number and no story, and you&rsquo;ll repeat the same mistake in a different month under a different label.</p>
+
+            <p>Useful notes are short and specific:</p>
+
+            <ul>
+                <li><em>&ldquo;Forecasted assuming the weekend market would happen. It rained, market was canceled.&rdquo;</em></li>
+                <li><em>&ldquo;Used last March as the base. Forgot we ran a $5-off promo last March that we&rsquo;re not running this March.&rdquo;</em></li>
+                <li><em>&ldquo;Catering desk was confident on three booked events. One of them was a tentative inquiry, not booked. Adjusted my mental model of what counts as &lsquo;booked.&rsquo;&rdquo;</em></li>
+            </ul>
+
+            <p>Useless notes:</p>
+
+            <ul>
+                <li><em>&ldquo;Felt right.&rdquo;</em></li>
+                <li><em>&ldquo;Optimistic month.&rdquo;</em></li>
+                <li><em>(blank)</em></li>
+            </ul>
+
+            <h2>The monthly review (15 minutes, last Friday of the month)</h2>
+
+            <p>The scorecard is worthless if you never look at it. Block 15 minutes on the last Friday of the month. Open the sheet. Filter to forecasts that have completed (the &ldquo;forecast for&rdquo; date is in the past and the &ldquo;actual&rdquo; column is filled in). Compute three numbers:</p>
+
+            <ol>
+                <li><strong>Hit rate.</strong> What fraction of forecasts had the actual inside the p10-to-p90 range? Should be ~80%.</li>
+                <li><strong>Bias.</strong> Average of (actual &minus; p50) across all completed forecasts. Should be near zero. If it&rsquo;s consistently positive, you&rsquo;re under-forecasting (sandbagging). If it&rsquo;s consistently negative, you&rsquo;re over-forecasting (wishful thinking).</li>
+                <li><strong>Worst miss.</strong> Find the forecast where the actual was furthest from your p50. Read the note. Decide whether it&rsquo;s a one-time event you couldn&rsquo;t have predicted, or a structural blind spot you should fix.</li>
+            </ol>
+
+            <p>That&rsquo;s the whole review. Fifteen minutes. The bias number alone has changed how I plan more than any forecasting tool I&rsquo;ve ever used. You think you&rsquo;re unbiased. You aren&rsquo;t. After three months, the sign of your bias will be obvious and stable, and you&rsquo;ll start adjusting your gut on the way in instead of getting surprised on the way out.</p>
+
+            <div class="callout">
+                <strong>The three numbers are the report.</strong> If you only ever look at hit-rate, bias, and the worst miss, you will improve faster than anyone running ARIMA without checking it. The tool that improves you is the scorecard. The model is irrelevant if the scorecard is honest.
+            </div>
+
+            <h2>What the scorecard reveals</h2>
+
+            <p>After a year of doing this on a small kitchen, three patterns emerged that no amount of staring at the P&amp;L would have surfaced:</p>
+
+            <ol>
+                <li><strong>August was always under-forecasted.</strong> We thought of August as a slow month because of the State Fair pulling foot traffic, but the data showed catering revenue spiked because corporate clients ran end-of-summer events. Two effects pulling in opposite directions; net was a 12% positive bias every August. We hadn&rsquo;t noticed because the two effects looked roughly similar in size in our heads.</li>
+                <li><strong>New menu items were over-forecasted by ~30%.</strong> Every launch we projected 50 orders/week and got 35. Every single time. Once we had the bias number, we just adjusted the launch projection down 25-30% on day one and started planning realistically.</li>
+                <li><strong>Weather sensitivity was bigger than we thought.</strong> Cold snaps below 10&deg;F dropped catering 35% on average; we&rsquo;d been mentally adjusting by maybe 15%. The scorecard&rsquo;s notes column was full of &ldquo;cold day&rdquo; entries on under-forecasted weeks. The data was right there, but it took the explicit tally to see it.</li>
+            </ol>
+
+            <p>None of these are dramatic insights individually. The compounding effect over a year is the dramatic part. Each pattern is a few percent of revenue saved or planned-for. Stack three of them and you&rsquo;ve materially changed your forecast quality without touching a model.</p>
+
+            <h2>The trap of the &ldquo;sophisticated&rdquo; alternative</h2>
+
+            <p>Software vendors will sell you a forecasting tool. Some are good; many bury you in a dashboard with no feedback loop. The dashboard tells you the forecast; it doesn&rsquo;t tell you whether the forecast was right last time. The scorecard tells you whether the forecast was right last time. <strong>The scorecard is the part that makes you better.</strong> The forecast itself is the part that&rsquo;s easy to buy.</p>
+
+            <p>If you&rsquo;re going to invest in tools, invest in the bookkeeping side first. A tool that gives you a number every month with no scoring loop is just a more confident version of guessing.</p>
+
+            <h2>The connection to bigger systems</h2>
+
+            <p>The scorecard idea isn&rsquo;t restaurant-specific. It&rsquo;s how every serious forecasting operation works, from weather services to financial markets to <a href="https://zenhodl.net?ref=quebracho" rel="noopener">automated prediction systems</a>. They all do the same thing: log the forecast, log the outcome, compute a calibration metric, look at the bias, fix the model. The math gets fancier at scale; the loop is the same.</p>
+
+            <p>The point of doing it on a spreadsheet is that the loop is more important than the fanciness. A small business with a calibrated owner who knows her bias outperforms a big-company forecasting team with three engineers and no scoring discipline. We&rsquo;ve seen it both ways.</p>
+
+            <h2>The starter template</h2>
+
+            <p>If you want to skip the design step, start here. Copy this into a sheet and fill it out for a week:</p>
+
+<pre><code>Made on   | Forecast for | Question         | p10  | p50  | p90  | Actual | In range? | Notes
+2026-04-28| 2026-05-04 wk| Catering revenue | 4200 | 5400 | 6800 |        |           | Mother's Day weekend
+2026-04-28| 2026-05-04 wk| Walk-in covers   |  240 |  310 |  380 |        |           | New patio opens Sat
+2026-04-28| 2026-05-31   | May revenue      |25000 |31000 |37000 |        |           | Includes Mother's Day, no holidays</code></pre>
+
+            <p>The &ldquo;In range?&rdquo; column formula:</p>
+
+<pre><code>=IF(AND(G2&gt;=D2, G2&lt;=F2), "Y", "N")</code></pre>
+
+            <p>That&rsquo;s the entire system. Twelve columns, three formulas, fifteen minutes a week. Run it for a year and you&rsquo;ll know more about your business than most owners ever do.</p>
+
+            <h2>Related posts</h2>
+            <ul>
+                <li><a href="/blog/calibrated-estimates-small-business/">Point Estimates Lie to Small Business Owners</a> &mdash; the why behind ranges; this post is the how-to-keep-score follow-up.</li>
+                <li><a href="/blog/demand-forecasting-small-restaurants/">Demand Forecasting for a 200-Order Kitchen</a> &mdash; the model that produces the forecasts the scorecard verifies.</li>
+                <li><a href="/blog/inventory-as-prediction-problem/">Inventory Is a Prediction Problem</a> &mdash; the operational counterpart: par levels as scored forecasts.</li>
+                <li><a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a> &mdash; the same calibrated-forecast discipline applied to live sports markets at scale.</li>
+            </ul>
+        </article>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Quebracho MN. Archive of the Quebracho Empanadas MN public story, now publishing a small-business data journal.</p>
+            <p style="margin-top: 8px;">Forecasting and calibration work discussed here is explored further at <a href="https://zenhodl.net?ref=quebracho" rel="noopener">ZenHodl</a>.</p>
+        </div>
+    </footer>
+</body>
+</html>
